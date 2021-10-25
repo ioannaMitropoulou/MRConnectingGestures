@@ -4,20 +4,17 @@ using UnityEngine.UI;
 
 public class GridCreator : MonoBehaviour
 {
-    #region --- event ---
-    public delegate void GridCreated(Vector3 gridsize);
-    public static event GridCreated OnGridCreated;
-    #endregion
-
     public Vector3 size = new Vector3(1, 1, 1);
     public Vector3 resolution = new Vector3(10, 10, 10);
     public Material outline_material = null;
 
     public Text txt = null;
 
-    public static GridPoint[,,] pts = null; // a 3-dimensional array of points
+    public GridPoint[,,] pts = null; // a 3-dimensional array of points
 
     private GameObject outline;
+
+    public Transform origin;
 
     void Start()
     {
@@ -28,7 +25,7 @@ public class GridCreator : MonoBehaviour
 
 
         // get origin's transform
-        Transform origin = this.transform.Find("Origin");
+        origin = this.transform.Find("Origin");
 
         // Create outline cube
         outline = GameObject.CreatePrimitive(PrimitiveType.Cube);
