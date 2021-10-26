@@ -8,8 +8,6 @@ public class GridCreator : MonoBehaviour
     public Vector3 resolution = new Vector3(10, 10, 10);
     public Material outline_material = null;
 
-    public Text txt = null;
-
     public GridPoint[,,] pts = null; // a 3-dimensional array of points
 
     private GameObject outline;
