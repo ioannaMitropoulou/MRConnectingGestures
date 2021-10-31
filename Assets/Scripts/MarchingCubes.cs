@@ -148,8 +148,10 @@ public static class MarchingCubes
         Debug.Log(triangles.Count);
 
         // Add UV Coordinate
+        // TODO: add support for orientation/rotation
         if (vertices.Count > 0)
         {
+
             Vector3 max_coord = vertices[0];
             Vector3 min_coord = vertices[0];
             for (int i = 1; i < vertices.Count; i++)
@@ -184,9 +186,10 @@ public static class MarchingCubes
                 u = (vertices[i][axis_rank[0]] - min_coord[axis_rank[0]]) / range[axis_rank[0]];
                 // use polar coordinate for v
                 Vector2 cross_section_coord = new Vector2((vertices[i][axis_rank[1]] - center[axis_rank[1]]), (vertices[i][axis_rank[2]] - center[axis_rank[2]]));
-                v = Vector2.Angle(Vector2.right,cross_section_coord)/180.0f;
+                v = Vector2.Angle(Vector2.right,cross_section_coord)/180.0f; // TODO: change Vector2.right according to orientation
                 uv.Add(new Vector2(u, v));
             }
+
 
         }
         
