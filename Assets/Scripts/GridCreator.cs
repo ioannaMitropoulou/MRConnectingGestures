@@ -32,7 +32,7 @@ public class GridCreator : MonoBehaviour
         outline.transform.localPosition = new Vector3(0.5f * size.x, 0.5f * size.y, 0.5f * size.z);
         outline.transform.localScale = new Vector3(size.x, size.y, size.z);
         outline.GetComponent<MeshRenderer>().material = outline_material;
-
+        
         // fill in pts information in the grid
         float dx = size.x / (resolution.x - 1);
         float dy = size.y / (resolution.y - 1);

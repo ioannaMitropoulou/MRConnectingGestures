@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public class ProceduralMesh : MonoBehaviour
 {
-    public Material material = null;
+    private Material material = null;
 
     private Mesh mesh = null;
 
@@ -84,6 +85,7 @@ public class ProceduralMesh : MonoBehaviour
     }
 
 
+
     void Start()
     {
         grid = GetComponentInParent<GridCreator>();
@@ -91,6 +93,11 @@ public class ProceduralMesh : MonoBehaviour
         // subscribe to GridPoint Changing event
         GridPoint.GridPointChanged += GridPointChanged;
 
+        // Create material
+        Texture tex = Resources.Load("Textures/Bamboo_01_basecolor") as Texture;
+        material = new Material(Shader.Find("Unlit/Texture"));
+        material.mainTexture = tex;
+        //materials = Resources.LoadAll("Materials/3D_Materials", typeof(Material)).Cast<Material>().ToArray();
     }
 
     private void GridPointChanged()
@@ -103,6 +110,7 @@ public class ProceduralMesh : MonoBehaviour
         if (recompute_flag && grid != null)
         {
             Generate();
+            
             recompute_flag = false;
             Debug.Log("Generating marching cubes mesh!");
         }

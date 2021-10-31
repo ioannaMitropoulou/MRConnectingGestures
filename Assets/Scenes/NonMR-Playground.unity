@@ -261,7 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b78df06dd0d8fa34a938cd4cc38dcef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: d222cb2ee0e40354fa4d1abc334eb895, type: 2}
 --- !u!1 &623316312
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,7 +416,6 @@ MonoBehaviour:
   size: {x: 2, y: 2, z: 5}
   resolution: {x: 10, y: 10, z: 20}
   outline_material: {fileID: 2100000, guid: 8bc7ffe6405f26e46a788aaee6af3a2c, type: 2}
-  txt: {fileID: 0}
   origin: {fileID: 0}
 --- !u!4 &1123373065
 Transform:
