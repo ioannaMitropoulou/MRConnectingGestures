@@ -127,7 +127,7 @@ public static class MarchingCubes
 
                                 vertices.Add(new Vector3(p.x * dimX, p.y * dimY, p.z * dimZ));
                                 
-                                uv.Add(new Vector2(0.0f, 0.0f)); // TODO Fill in properly!!
+                                
                             }
                         }
                     }
@@ -147,6 +147,50 @@ public static class MarchingCubes
         Debug.Log("triangles.Count");
         Debug.Log(triangles.Count);
 
+        // Add UV Coordinate
+        if (vertices.Count > 0)
+        {
+            Vector3 max_coord = vertices[0];
+            Vector3 min_coord = vertices[0];
+            for (int i = 1; i < vertices.Count; i++)
+            {
+                max_coord = Vector3.Max(max_coord, vertices[i]);
+                min_coord = Vector3.Min(min_coord, vertices[i]);
+            }
+            // find max axis by Bubble Sort
+            Vector3 range = max_coord - min_coord;
+            int[] axis_rank = { 0, 1, 2 }; // assume range x is largest, and range z is smallest
+            if (range[0] < range[1]) {
+                (range[0], range[1]) = (range[1], range[0]);
+                Swap(ref axis_rank[0], ref axis_rank[1]);
+            }
+            if (range[1] < range[2])
+            {
+                (range[1], range[2]) = (range[2], range[1]);
+                Swap(ref axis_rank[1], ref axis_rank[2]);
+            }
+            if (range[0] < range[1])
+            {
+                (range[0], range[1]) = (range[1], range[0]);
+                Swap(ref axis_rank[0], ref axis_rank[1]);
+            }
+
+            // assign UV coordinate by cylinder coordinate, where u is height and v is theta
+            // u is determined by axis with max range
+            Vector3 center = min_coord + range / 2.0f;
+            for(int i = 0; i<vertices.Count; i++)
+            {
+                float u, v;
+                u = (vertices[i][axis_rank[0]] - min_coord[axis_rank[0]]) / range[axis_rank[0]];
+                // use polar coordinate for v
+                Vector2 cross_section_coord = new Vector2((vertices[i][axis_rank[1]] - center[axis_rank[1]]), (vertices[i][axis_rank[2]] - center[axis_rank[2]]));
+                v = Vector2.Angle(Vector2.right,cross_section_coord)/180.0f;
+                uv.Add(new Vector2(u, v));
+            }
+
+        }
+        
+
         // TODO: Remove duplicates
         // https://answers.unity.com/questions/1382854/welding-vertices-at-runtime.html
         /*        bool doCompact = true;
@@ -158,6 +202,11 @@ public static class MarchingCubes
                     mesh.Normals.ComputeNormals();
                 }
                 return mesh;*/
+    }
+
+    private static void Swap<T> (ref T x, ref T y)
+    {
+        (y, x) = (x, y);
     }
 
     public static float V(float v1, float v2, float iso)
