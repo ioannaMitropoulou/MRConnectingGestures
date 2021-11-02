@@ -93,6 +93,12 @@ public class ProceduralMesh : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        // make sure to unsubscribe from event when disabled
+        GridPoint.GridPointChanged -= GridPointChanged;
+    }
+
     private void GridPointChanged()
     {
         recompute_flag = true;

@@ -18,33 +18,38 @@ public class GridPoint : MonoBehaviour
     private float onSize = 0.03f;
     private float offSize = 0.02f;
     private MeshRenderer mr = null;
-    private float _dist_value = 0.0f;
+    private float dist_value = 0.0f;
 
     private bool is_inside_activator_collider = false;
     private bool is_inside_deactivator_collider = false;
 
     private float dist_change_rate = 2.5f;
 
-    public float dist_value
+    private float max_allowed_abs_value = 4.0f;
+
+    public float Dist_value
     {
         get
         {
-            return _dist_value;
+            return dist_value;
         }
         set
         { 
-            if (Math.Abs(value - _dist_value) > 0.0000001) // if the value is changing
+            if (Math.Abs(value - dist_value) > 0.0000001) // if the value is changing
             {
-                _dist_value = value;
-                // update visualization color
-                bool inside = _dist_value < 0;
-                GetRenderer().material.color = inside ? onColor : offColor;
-
-                transform.localScale = inside ? new Vector3(onSize, onSize, onSize) : new Vector3(offSize, offSize, offSize);
-
-                if (GridPointChanged != null)
+                if (Math.Abs(value) < max_allowed_abs_value) // if we do not exceed max allowed value
                 {
-                    GridPointChanged(); //fire off event (for any code listening)
+                    dist_value = value;
+                    // update visualization color
+                    bool inside = dist_value < 0;
+                    GetRenderer().material.color = inside ? onColor : offColor;
+
+                    transform.localScale = inside ? new Vector3(onSize, onSize, onSize) : new Vector3(offSize, offSize, offSize);
+
+                    if (GridPointChanged != null)
+                    {
+                        GridPointChanged(); //fire off event (for any code listening)
+                    }
                 }
             }
         }
@@ -76,7 +81,7 @@ public class GridPoint : MonoBehaviour
 
     private void Start()
     {
-        dist_value = 0.1f;
+        Dist_value = 0.1f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -103,12 +108,12 @@ public class GridPoint : MonoBehaviour
         }
         else if (is_inside_activator_collider)
         {
-            dist_value = dist_value - dist_change_rate * Time.deltaTime;
+            Dist_value = Dist_value - dist_change_rate * Time.deltaTime;
         }
 
         else if (is_inside_deactivator_collider)
         {
-            dist_value = dist_value + dist_change_rate * Time.deltaTime;
+            Dist_value = Dist_value + dist_change_rate * Time.deltaTime;
         }
     }
 

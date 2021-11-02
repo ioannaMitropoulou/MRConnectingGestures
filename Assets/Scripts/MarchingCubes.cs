@@ -28,7 +28,7 @@ public static class MarchingCubes
             {
                 for (int z = 0; z < nZ; z++)
                 {
-                    values[index] = grid.pts[x, y, z].dist_value;
+                    values[index] = grid.pts[x, y, z].Dist_value;
                     index++;
                 }
             }
