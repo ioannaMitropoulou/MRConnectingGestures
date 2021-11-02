@@ -44,17 +44,9 @@ public class GridCreator : MonoBehaviour
             {
                 for (int x = 0; x < (int)resolution.x; x++)
                 {
-                    // create GameObject on which the GridPoint class will be attached
-                    GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    go.name = string.Format("P{0}.{1}.{2}", x, y, z);
-                    go.transform.parent = origin;
-                    go.transform.localPosition = new Vector3(x*dx, y*dy, z*dz);
-                    go.GetComponent<Collider>().isTrigger = true;
-                    Rigidbody rb = go.AddComponent<Rigidbody>();
-                    rb.useGravity = false;
+                    Vector3 pos = new Vector3(origin.transform.position.x + x * dx, origin.transform.position.y + y * dy, origin.transform.position.z + z * dz);
+                    pts[x, y, z] = new GridPoint(pos);
 
-                    // attach GridPoint, and assign to the pts[x,y,z] array
-                    pts[x, y, z] = go.AddComponent<GridPoint>();
                 }
             }
         }
@@ -63,6 +55,11 @@ public class GridCreator : MonoBehaviour
 
     void Update()
     {
+        // call update of each GridPoint
+        for (int z = 0; z < (int)resolution.z; z++)
+            for (int y = 0; y < (int)resolution.y; y++)
+                for (int x = 0; x < (int)resolution.x; x++)
+                    pts[x, y, z].Update();
     }
 
 

@@ -5,27 +5,31 @@ using System;
 // NOTE: this script is used for MarchingCube
 // PURPOSE: enables each point to be easily identified as on / off
 
-public class GridPoint : MonoBehaviour
+public class GridPoint
 {
     #region --- events ---
     public static event Action GridPointChanged;  //event name
     #endregion
 
+    public Vector3 position;
+    private Vector3 scale = new Vector3(1.0f, 1.0f, 1.0f);
 
     private Color onColor = Color.red;
     private Color offColor = Color.grey;
 
     private float onSize = 0.03f;
     private float offSize = 0.02f;
-    private MeshRenderer mr = null;
     private float dist_value = 0.0f;
 
-    private bool is_inside_activator_collider = false;
-    private bool is_inside_deactivator_collider = false;
-
-    private float dist_change_rate = 2.5f;
+    public bool is_inside_collider = false;
+    public float collider_change_rate = 2.5f;
 
     private float max_allowed_abs_value = 4.0f;
+
+    public GridPoint(Vector3 pos)
+    {
+        position = pos;
+    }
 
     public float Dist_value
     {
@@ -42,12 +46,13 @@ public class GridPoint : MonoBehaviour
                     dist_value = value;
                     // update visualization color
                     bool inside = dist_value < 0;
-                    GetRenderer().material.color = inside ? onColor : offColor;
+                    //GetRenderer().material.color = inside ? onColor : offColor;
 
-                    transform.localScale = inside ? new Vector3(onSize, onSize, onSize) : new Vector3(offSize, offSize, offSize);
+                    scale = inside ? new Vector3(onSize, onSize, onSize) : new Vector3(offSize, offSize, offSize);
 
                     if (GridPointChanged != null)
                     {
+                        Debug.Log("Grid point changed!");
                         GridPointChanged(); //fire off event (for any code listening)
                     }
                 }
@@ -55,36 +60,14 @@ public class GridPoint : MonoBehaviour
         }
     }
 
-    public bool Visible
-    {
-        get
-        {
-            return GetRenderer().enabled;
-        }
-        set
-        {
-            GetRenderer().enabled = value;
-        }
-    }
-
-    public Vector3 Position
-    {
-        get
-        {
-            return this.transform.localPosition;
-        }
-        set
-        {
-            this.transform.localPosition = new Vector3(value.x, value.y, value.z);
-        }
-    }
 
     private void Start()
     {
         Dist_value = 0.1f;
     }
 
-    private void OnTriggerEnter(Collider other)
+
+/*    private void OnTriggerEnter(Collider other)
     {
         if (other.name == "Activator")
             is_inside_activator_collider = true;
@@ -98,31 +81,23 @@ public class GridPoint : MonoBehaviour
             is_inside_activator_collider = false;
         else if (other.name == "Deactivator")
             is_inside_deactivator_collider = false;
-    }
+    }*/
 
-    void Update()
+
+    public void Update()
     {
-        if (is_inside_activator_collider && is_inside_deactivator_collider)
+        if (is_inside_collider)
         {
-            // do nothing
-        }
-        else if (is_inside_activator_collider)
-        {
-            Dist_value = Dist_value - dist_change_rate * Time.deltaTime;
-        }
-
-        else if (is_inside_deactivator_collider)
-        {
-            Dist_value = Dist_value + dist_change_rate * Time.deltaTime;
+            Dist_value = Dist_value + collider_change_rate * Time.deltaTime;
         }
     }
 
 
 
-    private MeshRenderer GetRenderer()
+/*    private MeshRenderer GetRenderer()
     {
         if (mr == null)
             mr = this.GetComponent<MeshRenderer>();
         return mr;
-    }
+    }*/
 }

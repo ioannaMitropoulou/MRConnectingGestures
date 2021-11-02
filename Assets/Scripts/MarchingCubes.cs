@@ -137,11 +137,15 @@ public static class MarchingCubes
 
         for (int i = 0; i < vertices.Count; i += 3)
         {
-            triangles.Add(i + 2);
+/*            triangles.Add(i + 2);
             triangles.Add(i + 1);
-            triangles.Add(i); // , i + 1, i + 2
-            
-            
+            triangles.Add(i); // , i + 1, i + 2*/
+
+            triangles.Add(i);
+            triangles.Add(i + 1);
+            triangles.Add(i + 2); // , i + 1, i + 2
+
+
         }
 
         Debug.Log("triangles.Count");
