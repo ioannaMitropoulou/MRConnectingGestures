@@ -46,7 +46,6 @@ public class GridCreator : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(origin.transform.position.x + x * dx, origin.transform.position.y + y * dy, origin.transform.position.z + z * dz);
                     pts[x, y, z] = new GridPoint(pos);
-
                 }
             }
         }

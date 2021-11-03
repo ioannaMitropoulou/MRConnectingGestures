@@ -22,9 +22,9 @@ public class GridPoint
     private float dist_value = 0.0f;
 
     public bool is_inside_collider = false;
-    public float collider_change_rate = 2.5f;
+    public float collider_change_rate = 0.0f;
 
-    private float max_allowed_abs_value = 4.0f;
+    private float max_allowed_abs_value = 1.0f;
 
     public GridPoint(Vector3 pos)
     {
@@ -67,23 +67,6 @@ public class GridPoint
     }
 
 
-/*    private void OnTriggerEnter(Collider other)
-    {
-        if (other.name == "Activator")
-            is_inside_activator_collider = true;
-        else if (other.name == "Deactivator")
-            is_inside_deactivator_collider = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.name == "Activator")
-            is_inside_activator_collider = false;
-        else if (other.name == "Deactivator")
-            is_inside_deactivator_collider = false;
-    }*/
-
-
     public void Update()
     {
         if (is_inside_collider)
@@ -92,12 +75,4 @@ public class GridPoint
         }
     }
 
-
-
-/*    private MeshRenderer GetRenderer()
-    {
-        if (mr == null)
-            mr = this.GetComponent<MeshRenderer>();
-        return mr;
-    }*/
 }

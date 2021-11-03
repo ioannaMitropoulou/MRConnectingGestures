@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SculptingPrimitive : MonoBehaviour
 {
-    public float dist_change_rate = 0.1f;
+    public float dist_change_rate = 0.05f;
 
     public enum PrimitivesEnum
     {
@@ -53,14 +53,13 @@ public class SculptingPrimitive : MonoBehaviour
         // --- Create distance function
         if (primitive_type == PrimitivesEnum.Sphere)
         {
-            df = new DFSphere(shape.transform.localScale.x * 0.5f, shape.transform.position);
+            df = new DFSphere(shape.transform.localScale.x * 0.5f, shape.transform); // use the localScale.x as the circle radius
         }
         else if (primitive_type == PrimitivesEnum.Cube)
         {
-            df = new DFBox(shape.transform.position, shape.transform.localScale * 0.5f); // TODO
+            df = new DFBox(shape.transform.localScale, shape.transform); // use the localScale as box dimensions
         }
     }
-
 
     void OnDrawGizmos()
     {
@@ -86,10 +85,14 @@ public class SculptingPrimitive : MonoBehaviour
         {
             shape.transform.hasChanged = false;
 
-            // --- update DistanceFunction
-            df.cen = shape.transform.position;
-            transform.position = shape.transform.position;
+            // --- update DistanceFunction transform and dimensions
+            df.transform = shape.transform;
+            df.UpdateDimensions(shape.transform.localScale);
 
+            // --- update Gizmo transform
+            transform.position = shape.transform.position;
+            transform.rotation = shape.transform.rotation;
+            transform.localScale = shape.transform.localScale;
 
             // --- go through all grid points, and check for collision
             for (int z = 0; z < (int)grid.resolution.z; z++)
