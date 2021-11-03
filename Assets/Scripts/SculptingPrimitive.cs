@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SculptingPrimitive : MonoBehaviour
 {
-    public float dist_change_rate = 0.05f;
+    public float dist_change_rate = 0.01f;
 
     public enum PrimitivesEnum
     {

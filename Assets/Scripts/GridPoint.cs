@@ -12,7 +12,6 @@ public class GridPoint
     #endregion
 
     public Vector3 position;
-    private Vector3 scale = new Vector3(1.0f, 1.0f, 1.0f);
 
     private Color onColor = Color.red;
     private Color offColor = Color.grey;
@@ -48,11 +47,8 @@ public class GridPoint
                     bool inside = dist_value < 0;
                     //GetRenderer().material.color = inside ? onColor : offColor;
 
-                    scale = inside ? new Vector3(onSize, onSize, onSize) : new Vector3(offSize, offSize, offSize);
-
                     if (GridPointChanged != null)
                     {
-                        Debug.Log("Grid point changed!");
                         GridPointChanged(); //fire off event (for any code listening)
                     }
                 }

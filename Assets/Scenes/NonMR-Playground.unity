@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: -0.05
+  dist_change_rate: -0.01
   primitive_type: 1
   grid: {fileID: 1123373064}
 --- !u!4 &887358723
@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: 0.05
+  dist_change_rate: 0.01
   primitive_type: 1
   grid: {fileID: 1123373064}
 --- !u!4 &1029997237
