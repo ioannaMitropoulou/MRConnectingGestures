@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Input;
 
 public class SculptingPrimitive : MonoBehaviour
 {
@@ -42,6 +44,9 @@ public class SculptingPrimitive : MonoBehaviour
         shape.transform.rotation = transform.rotation;
         shape.transform.localScale = transform.localScale;
 
+        // --- make the shape grabbable in AR 
+        shape.AddComponent<ObjectManipulator>();
+        shape.AddComponent<NearInteractionGrabbable>();
 
         // --- Set color
         if (dist_change_rate > 0) // if the primitive is an activator
