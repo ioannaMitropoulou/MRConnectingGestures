@@ -13,8 +13,6 @@ public class ProceduralMesh : MonoBehaviour
     private List<int> triangles = new List<int>();
     private List<Vector2> uv = new List<Vector2>();
 
-    private bool recompute_flag = false;
-
     private GridCreator grid = null;
 
     private void Generate()
@@ -91,21 +89,7 @@ public class ProceduralMesh : MonoBehaviour
     {
         grid = GetComponentInParent<GridCreator>();
 
-        // subscribe to GridPoint Changing event
-        //GridPoint.GridPointChanged += GridPointChanged;
-
     }
-
-    private void OnDisable()
-    {
-        // make sure to unsubscribe from event when disabled
-        //GridPoint.GridPointChanged -= GridPointChanged;
-    }
-
-    /*private void GridPointChanged()
-    {
-        recompute_flag = true;
-    }*/
 
     void Update()
     {

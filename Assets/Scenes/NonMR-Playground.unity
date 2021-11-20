@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: -0.01
+  dist_change_rate: -0.1
   primitive_type: 1
   grid: {fileID: 1123373064}
 --- !u!4 &887358723
@@ -365,7 +365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: 0.01
+  dist_change_rate: 0.1
   primitive_type: 1
   grid: {fileID: 1123373064}
 --- !u!4 &1029997237
@@ -412,8 +412,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 2, y: 2, z: 3}
-  resolution: {x: 40, y: 40, z: 120}
+  resolution: {x: 400, y: 400, z: 200}
   outline_material: {fileID: 2100000, guid: 8bc7ffe6405f26e46a788aaee6af3a2c, type: 2}
+  redraw_points: []
   origin: {fileID: 0}
 --- !u!4 &1123373065
 Transform:

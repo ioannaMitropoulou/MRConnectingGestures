@@ -126,6 +126,7 @@ public class SculptingPrimitive : MonoBehaviour
                                 if (pt.needs_redraw)
                                 {
                                     grid.redraw_points.Add(new Vector3Int(x, y, z));
+                                    pt.needs_redraw = false;
                                 }
                             }
                         }

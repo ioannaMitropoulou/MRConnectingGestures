@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class MarchingCubes
 {
-    public static void Run(GridCreator grid, float iso,
+    /*public static void Run(GridCreator grid, float iso,
         List<Vector3> vertices, List<int> triangles, List<Vector2> uv)
     {
 
@@ -137,9 +137,7 @@ public static class MarchingCubes
 
         for (int i = 0; i < vertices.Count; i += 3)
         {
-            /*            triangles.Add(i + 2);
-                        triangles.Add(i + 1);
-                        triangles.Add(i); // , i + 1, i + 2*/
+            
 
             triangles.Add(i);
             triangles.Add(i + 1);
@@ -153,7 +151,7 @@ public static class MarchingCubes
 
         // TODO: Remove duplicates
         // https://answers.unity.com/questions/1382854/welding-vertices-at-runtime.html
-        /*        bool doCompact = true;
+                bool doCompact = true;
                 if (doCompact)
                 {
                     mesh.Vertices.CombineIdentical(true, true);
@@ -161,8 +159,8 @@ public static class MarchingCubes
                     mesh.Compact();
                     mesh.Normals.ComputeNormals();
                 }
-                return mesh;*/
-    }
+                return mesh;
+    }*/
 
     private static Dictionary<int, List<Vector3>> cube_to_vertices = new Dictionary<int, List<Vector3>>(); // map from cube index to its vertices
 
@@ -324,7 +322,7 @@ public static class MarchingCubes
 
                     vertices.Add(new Vector3(p.x * dimX, p.y * dimY, p.z * dimZ));
 
-                    //uv.Add(new Vector2(0.0f, 0.0f)); // TODO Fill in properly!!
+                    
                 }
             }
         }

@@ -57,11 +57,7 @@ public class GridCreator : MonoBehaviour
 
     void Update()
     {
-        // call update of each GridPoint
-        /*for (int z = 0; z < (int)resolution.z; z++)
-            for (int y = 0; y < (int)resolution.y; y++)
-                for (int x = 0; x < (int)resolution.x; x++)
-                    pts[x, y, z].Update();*/
+       
     }
 
 
