@@ -123,6 +123,52 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &40919614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 40919615}
+  - component: {fileID: 40919616}
+  m_Layer: 0
+  m_Name: SP Activator Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &40919615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40919614}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1, y: 0.11, z: -0.266}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_Children: []
+  m_Father: {fileID: 220762361}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &40919616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40919614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dist_change_rate: 0.5
+  primitive_type: 1
+  grid: {fileID: 734529070}
 --- !u!1 &220762360
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,9 +201,57 @@ Transform:
   - {fileID: 734529069}
   - {fileID: 369162971}
   - {fileID: 1488179314}
+  - {fileID: 40919615}
+  - {fileID: 223974227}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &223974226
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 223974227}
+  - component: {fileID: 223974228}
+  m_Layer: 0
+  m_Name: SP Deactivator Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &223974227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223974226}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.7, y: 0.1, z: -0.2}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_Children: []
+  m_Father: {fileID: 220762361}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &223974228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 223974226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dist_change_rate: -0.5
+  primitive_type: 1
+  grid: {fileID: 734529070}
 --- !u!1 &369162970
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +263,7 @@ GameObject:
   - component: {fileID: 369162971}
   - component: {fileID: 369162972}
   m_Layer: 0
-  m_Name: SP Activator
+  m_Name: SP Activator Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -183,8 +277,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 369162970}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.6, y: -0.23, z: 1.01}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalPosition: {x: -1, y: 0.2, z: -0.266}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 220762361}
   m_RootOrder: 3
@@ -201,8 +295,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: 0.01
-  primitive_type: 1
+  dist_change_rate: 0.5
+  primitive_type: 0
   grid: {fileID: 734529070}
 --- !u!1 &421320253
 GameObject:
@@ -367,7 +461,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734529068}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.96, y: -0.56, z: 1.588}
+  m_LocalPosition: {x: -1.2, y: 0.1, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1204009302}
@@ -387,9 +481,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8e6ef8e7063c0f41ac62d933a2aa032, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 2, y: 1, z: 1}
-  resolution: {x: 80, y: 60, z: 60}
+  size: {x: 0.5, y: 0.25, z: 0.25}
+  resolution: {x: 128, y: 64, z: 64}
   outline_material: {fileID: 2100000, guid: 8bc7ffe6405f26e46a788aaee6af3a2c, type: 2}
+  redraw_points: []
   origin: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
@@ -472,7 +567,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 220762361}
   m_RootOrder: 0
@@ -594,7 +689,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1344994794}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.993, y: -0.143, z: -0.164}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 220762361}
@@ -744,7 +839,7 @@ GameObject:
   - component: {fileID: 1488179314}
   - component: {fileID: 1488179315}
   m_Layer: 0
-  m_Name: SP Deactivator
+  m_Name: SP Deactivator Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -758,8 +853,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488179313}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.436, y: -0.23, z: 1.024}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_LocalPosition: {x: -0.7, y: 0.2, z: -0.2}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 220762361}
   m_RootOrder: 4
@@ -776,8 +871,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: -0.01
-  primitive_type: 1
+  dist_change_rate: -0.5
+  primitive_type: 0
   grid: {fileID: 734529070}
 --- !u!1 &1695201564
 GameObject:
