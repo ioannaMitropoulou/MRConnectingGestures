@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class MarchingCubes
 {
-    public static void Run(GridCreator grid, float iso, 
+    public static void Run(GridCreator grid, float iso,
         List<Vector3> vertices, List<int> triangles, List<Vector2> uv)
     {
 
@@ -126,7 +126,7 @@ public static class MarchingCubes
                                 }
 
                                 vertices.Add(new Vector3(p.x * dimX, p.y * dimY, p.z * dimZ));
-                                
+
                                 uv.Add(new Vector2(0.0f, 0.0f)); // TODO Fill in properly!!
                             }
                         }
@@ -137,9 +137,9 @@ public static class MarchingCubes
 
         for (int i = 0; i < vertices.Count; i += 3)
         {
-/*            triangles.Add(i + 2);
-            triangles.Add(i + 1);
-            triangles.Add(i); // , i + 1, i + 2*/
+            /*            triangles.Add(i + 2);
+                        triangles.Add(i + 1);
+                        triangles.Add(i); // , i + 1, i + 2*/
 
             triangles.Add(i);
             triangles.Add(i + 1);
@@ -164,15 +164,195 @@ public static class MarchingCubes
                 return mesh;*/
     }
 
-    public static float V(float v1, float v2, float iso)
+    private static Dictionary<int, List<Vector3>> cube_to_vertices = new Dictionary<int, List<Vector3>>(); // map from cube index to its vertices
+
+    public static void Modify(GridCreator grid, float iso,
+    List<Vector3> vertices, List<int> triangles, List<Vector2> uv)
     {
-        if (Mathf.Abs(v2 - v1) < 0.0000001f)
-            return 0;
-        return (iso - v1) / (v2 - v1);
+
+        int nX = (int)grid.resolution.x;
+        int nY = (int)grid.resolution.y;
+        int nZ = (int)grid.resolution.z;
+        int nYZ = nY * nZ;
+
+        float dimX = grid.size.x / (nX - 1);
+        float dimY = grid.size.y / (nY - 1);
+        float dimZ = grid.size.z / (nZ - 1);
+
+        int nXc = nX - 1;
+        int nYc = nY - 1;
+        int nZc = nZ - 1;
+        int nYZc = nYc * nZc;
+
+        // All cube that needs redraw
+        HashSet<int> redraw_cubes = new HashSet<int>();
+        for (int idx = 0; idx < grid.redraw_points.Count; idx++)
+        {
+            Vector3Int pt = grid.redraw_points[idx];
+            for (int i=0; i<2; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    for (int k = 0; k < 2; k++)
+                    {
+                        int x = pt.x - i;
+                        int y = pt.y - j;
+                        int z = pt.z - k;
+                        if (x >= 0 && x < nXc && y >= 0 && y < nYc && z >= 0 && z < nZc)
+                        {
+                            redraw_cubes.Add(z + y * nZc + x * nYZc);
+                        }
+                    }
+                }
+            } 
+        }
+
+        // Construct cube
+        foreach(int index in redraw_cubes)
+        {
+            int x = index / nYZc;
+            int y = (index % nYZc) / nZc;
+            int z = index % nZc;
+            constructSingleCube(grid, iso, x, y, z, nX, nY, nZ, dimX, dimY, dimZ);
+        }
+        
+        foreach(var vertices_list in cube_to_vertices.Values)
+        {
+            // TODO: remove duplicate
+            vertices.AddRange(vertices_list);
+        }
+
+        for (int i = 0; i < vertices.Count; i += 3)
+        {
+            triangles.Add(i);
+            triangles.Add(i + 1);
+            triangles.Add(i + 2); // , i + 1, i + 2
+
+            uv.Add(Vector2.zero);
+            uv.Add(Vector2.zero);
+        }
+
+        Debug.Log("triangles.Count");
+        Debug.Log(triangles.Count);
+
     }
 
+    private static void constructSingleCube(GridCreator grid, float iso, int x, int y, int z,int nX, int nY, int nZ, float dimX, float dimY, float dimZ)
+    {
+        int caseNumber = 0;
+        float[] n = new float[8]; // 8 cube corners
+        // collecting the values
+        n[0] = grid.pts[x ,y+1, z].Dist_value;
+        n[1] = grid.pts[x+1, y+1, z].Dist_value;
+        n[2] = grid.pts[x+1, y, z].Dist_value;
+        n[3] = grid.pts[x, y, z].Dist_value;
+        n[4] = grid.pts[x, y + 1, z+1].Dist_value;
+        n[5] = grid.pts[x + 1, y + 1, z+1].Dist_value;
+        n[6] = grid.pts[x+1, y, z+1].Dist_value;
+        n[7] = grid.pts[x, y, z+1].Dist_value;
+        
+        for (int i = 7; i > -1; i--)
+        {
+            if (n[i] > iso)
+            {
+                caseNumber++;
+            }
+            if (i > 0)
+            {
+                caseNumber = caseNumber << 1;
+            }
+        }
+        // collecting the faces
+        List<Vector3> vertices = new List<Vector3>();
+       
+        int offset = caseNumber * 15;
+        for (int i = offset; i < offset + 15; i += 3)
+        {
+            if (faces[i] > -1)
 
-    public static int[] faces = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 8, 3, -1, -1, -1, -1,
+            {
+                
+                for (int j = i; j < i + 3; j++)
+                {
+                    Vector3 p = new Vector3();
+                    switch (faces[j])
+                    {
+                        // horizontal bottom
+                        case 0:
+                            p = new Vector3(x + V(n[0], n[1], iso), y + 1, z);
+                            break;
+                        case 1:
+                            p = new Vector3(x + 1, y + V(n[2], n[1], iso), z);
+                            break;
+                        case 2:
+                            p = new Vector3(x + V(n[3], n[2], iso), y, z);
+                            break;
+                        case 3:
+                            p = new Vector3(x, y + V(n[3], n[0], iso), z);
+                            break;
+
+                        // horizontal top
+                        case 4:
+                            p = new Vector3(x + V(n[4], n[5], iso), y + 1, z + 1);
+                            break;
+                        case 5:
+                            p = new Vector3(x + 1, y + V(n[6], n[5], iso), z + 1);
+                            break;
+                        case 6:
+                            p = new Vector3(x + V(n[7], n[6], iso), y, z + 1);
+                            break;
+                        case 7:
+                            p = new Vector3(x, y + V(n[7], n[4], iso), z + 1);
+                            break;
+
+                        // vertical
+                        case 8:
+                            p = new Vector3(x, y + 1, z + V(n[0], n[4], iso));
+                            break;
+                        case 9:
+                            p = new Vector3(x + 1, y + 1, z + V(n[1], n[5], iso));
+                            break;
+                        case 10:
+                            p = new Vector3(x, y, z + V(n[3], n[7], iso));
+                            break;
+                        case 11:
+                            p = new Vector3(x + 1, y, z + V(n[2], n[6], iso));
+                            break;
+                        default:
+                            break;
+                    }
+
+                    vertices.Add(new Vector3(p.x * dimX, p.y * dimY, p.z * dimZ));
+
+                    //uv.Add(new Vector2(0.0f, 0.0f)); // TODO Fill in properly!!
+                }
+            }
+        }
+        // --- add to dictionary
+        int nYc = nY - 1;
+        int nZc = nZ - 1;
+        int nYZc = nYc * nZc;
+        int cube_index = z + y * nZc + x * nYZc;
+        if (vertices.Count > 0)
+        {
+            cube_to_vertices[cube_index] = vertices;
+        }
+        else
+        {
+            cube_to_vertices.Remove(cube_index);
+        }
+        
+    }
+
+    public static float V(float v1, float v2, float iso)
+{
+    if (Mathf.Abs(v2 - v1) < 0.0000001f)
+        return 0;
+    return (iso - v1) / (v2 - v1);
+}
+
+
+public static int[] faces = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 8, 3, -1, -1, -1, -1,
             -1, -1, -1, -1, -1, -1, -1, -1, 0, 1, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 8, 3, 9, 8, 1,
             -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, 2, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 8, 3, 1, 2,
             11, -1, -1, -1, -1, -1, -1, -1, -1, -1, 9, 2, 11, 0, 2, 9, -1, -1, -1, -1, -1, -1, -1, -1, -1, 2, 8, 3, 2,

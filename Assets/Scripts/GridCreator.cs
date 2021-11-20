@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +11,7 @@ public class GridCreator : MonoBehaviour
     public Material outline_material = null;
 
     public GridPoint[,,] pts = null; // a 3-dimensional array of points
+    public List<Vector3Int> redraw_points = new List<Vector3Int>(); // list of point indices that needs redraw
 
     private GameObject outline;
 
@@ -55,10 +58,10 @@ public class GridCreator : MonoBehaviour
     void Update()
     {
         // call update of each GridPoint
-        for (int z = 0; z < (int)resolution.z; z++)
+        /*for (int z = 0; z < (int)resolution.z; z++)
             for (int y = 0; y < (int)resolution.y; y++)
                 for (int x = 0; x < (int)resolution.x; x++)
-                    pts[x, y, z].Update();
+                    pts[x, y, z].Update();*/
     }
 
 

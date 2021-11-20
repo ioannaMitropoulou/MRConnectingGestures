@@ -7,9 +7,9 @@ using System;
 
 public class GridPoint
 {
-    #region --- events ---
+    /*#region --- events ---
     public static event Action GridPointChanged;  //event name
-    #endregion
+    #endregion*/
 
     public Vector3 position;
 
@@ -21,7 +21,8 @@ public class GridPoint
     private float dist_value = 0.0f;
 
     public bool is_inside_collider = false;
-    public float collider_change_rate = 0.0f;
+    //public float collider_change_rate = 0.0f;
+    public bool needs_redraw = false;
 
     private float max_allowed_abs_value = 1.0f;
 
@@ -43,32 +44,33 @@ public class GridPoint
                 if (Math.Abs(value) < max_allowed_abs_value) // if we do not exceed max allowed value
                 {
                     dist_value = value;
+                    needs_redraw = true;
                     // update visualization color
-                    bool inside = dist_value < 0;
+                    //bool inside = dist_value < 0;
                     //GetRenderer().material.color = inside ? onColor : offColor;
 
-                    if (GridPointChanged != null)
+                    /*if (GridPointChanged != null)
                     {
                         GridPointChanged(); //fire off event (for any code listening)
-                    }
+                    }*/
                 }
             }
         }
     }
 
+    public void Update_Distance(float distance_change_rate)
+    {   
+        Dist_value = Dist_value + distance_change_rate * Time.deltaTime;
+    }
 
     private void Start()
     {
         Dist_value = 0.1f;
     }
 
-
     public void Update()
     {
-        if (is_inside_collider)
-        {
-            Dist_value = Dist_value + collider_change_rate * Time.deltaTime;
-        }
+        
     }
 
 }

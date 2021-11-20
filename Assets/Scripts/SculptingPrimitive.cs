@@ -100,12 +100,13 @@ public class SculptingPrimitive : MonoBehaviour
             transform.localScale = shape.transform.localScale;
 
             // --- go through all neigboring grid points, and check for collision
+            // --- store all points in list which need redraw
             float dx = grid.size.x / (grid.resolution.x - 1);
             float dy = grid.size.y / (grid.resolution.y - 1);
             float dz = grid.size.z / (grid.resolution.z - 1);
             Vector3 dxyz_inv = new Vector3(1/dx, 1/dy, 1/dz);
             Vector3Int xyz_start, xyz_end;
-            xyz_start = Vector3Int.Max(Vector3Int.FloorToInt(Vector3.Scale(transform.position - 0.5f*transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.zero);
+            xyz_start = Vector3Int.Max(Vector3Int.FloorToInt(Vector3.Scale(transform.position - 0.5f * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.zero);
             xyz_end = Vector3Int.Min(Vector3Int.CeilToInt(Vector3.Scale(transform.position + 0.5f * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.FloorToInt(grid.resolution)-Vector3Int.one);
             for (int z = xyz_start.z; z <= xyz_end.z; z++)
             {
@@ -118,8 +119,15 @@ public class SculptingPrimitive : MonoBehaviour
                         
                         if (d < 0) // if there is a collision, activate collision mode
                         {
-                            pt.is_inside_collider = true;
-                            pt.collider_change_rate = dist_change_rate;
+                            if (!pt.is_inside_collider)
+                            {
+                                pt.is_inside_collider = true;
+                                pt.Update_Distance(dist_change_rate);
+                                if (pt.needs_redraw)
+                                {
+                                    grid.redraw_points.Add(new Vector3Int(x, y, z));
+                                }
+                            }
                         }
                         else // otherwise deactivate collision mode
                         {
@@ -128,6 +136,7 @@ public class SculptingPrimitive : MonoBehaviour
                     }
                 }
             }
+ 
         }
     }
 }

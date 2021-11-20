@@ -30,7 +30,10 @@ public class ProceduralMesh : MonoBehaviour
 
         // --- run marching cubes
         float iso = 0.0f;
-        MarchingCubes.Run(grid, iso, vertices, triangles, uv);
+        
+        MarchingCubes.Modify(grid, iso, vertices, triangles, uv);
+        
+        
 
         // --- set mesh
         mesh.vertices = vertices.ToArray();
@@ -89,27 +92,27 @@ public class ProceduralMesh : MonoBehaviour
         grid = GetComponentInParent<GridCreator>();
 
         // subscribe to GridPoint Changing event
-        GridPoint.GridPointChanged += GridPointChanged;
+        //GridPoint.GridPointChanged += GridPointChanged;
 
     }
 
     private void OnDisable()
     {
         // make sure to unsubscribe from event when disabled
-        GridPoint.GridPointChanged -= GridPointChanged;
+        //GridPoint.GridPointChanged -= GridPointChanged;
     }
 
-    private void GridPointChanged()
+    /*private void GridPointChanged()
     {
         recompute_flag = true;
-    }
+    }*/
 
     void Update()
     {
-        if (recompute_flag && grid != null)
+        if (grid != null && grid.redraw_points.Count > 0)
         {
             Generate();
-            recompute_flag = false;
+            grid.redraw_points.Clear();
             Debug.Log("Generating marching cubes mesh!");
         }
     }
