@@ -14,6 +14,7 @@ public class GridPoint
 
     public bool is_inside_collider = false;
     public bool needs_redraw = false;
+    public bool is_on_boundary = false;
 
     private float max_allowed_abs_value = 1.0f;
 
@@ -29,8 +30,10 @@ public class GridPoint
             return dist_value;
         }
         set
-        { 
-            if (Math.Abs(value - dist_value) > 0.0000001) // if the value is changing
+        {
+            needs_redraw = false;
+
+            if (Math.Abs(value - dist_value) > 0.0000001 && !is_on_boundary) // if the value is changing
             {
                 if (value < -max_allowed_abs_value)
                 {

@@ -49,6 +49,9 @@ public class GridCreator : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(origin.transform.position.x + x * dx, origin.transform.position.y + y * dy, origin.transform.position.z + z * dz);
                     pts[x, y, z] = new GridPoint(pos);
+
+                    if (x == 0 || y == 0 || z == 0 || x == (int)resolution.x - 1 || y == (int)resolution.y - 1 || z == (int)resolution.z - 1)
+                        pts[x, y, z].is_on_boundary = true;
                 }
             }
         }
