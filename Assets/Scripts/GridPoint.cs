@@ -10,60 +10,38 @@ public class GridPoint
 
     public Vector3 position;
 
-    private float dist_value = 0.0f;
+    private bool state = false;
 
     public bool is_inside_collider = false;
     public bool needs_redraw = false;
     public bool is_on_boundary = false;
-
-    private float max_allowed_abs_value = 1.0f;
 
     public GridPoint(Vector3 pos)
     {
         position = pos;
     }
 
-    public float Dist_value
+    public bool State
     {
         get
         {
-            return dist_value;
+            return state;
         }
         set
         {
             needs_redraw = false;
 
-            if (Math.Abs(value - dist_value) > 0.0000001 && !is_on_boundary) // if the value is changing
+            if (value != state && !is_on_boundary) // if the value is changing
             {
-                if (value < -max_allowed_abs_value)
-                {
-                    needs_redraw = dist_value != -max_allowed_abs_value;
-                    dist_value = -max_allowed_abs_value;
-                }
-                else if (value > max_allowed_abs_value)
-                {
-                    needs_redraw = dist_value != max_allowed_abs_value;
-                    dist_value = max_allowed_abs_value;
-                }
-                else
-                {
-                    dist_value = value;
-                    needs_redraw = true;
-                    
-                }
+                state = value;
+                needs_redraw = true;
             }
         }
     }
 
-    public void Update_Distance(float distance_change_rate)
+    public void Update_State(bool sculptingToolType)
     {
-        Dist_value = Dist_value + distance_change_rate * Time.deltaTime;
+        State = sculptingToolType;
     }
-
-    private void Start()
-    {
-        Dist_value = 0.1f;
-    }
-
 
 }

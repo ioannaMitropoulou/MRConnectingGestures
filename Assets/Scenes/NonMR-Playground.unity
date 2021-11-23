@@ -289,7 +289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: -50.05
+  tool_type: 1
   primitive_type: 1
   grid: {fileID: 1123373064}
 --- !u!4 &887358723
@@ -300,7 +300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887358721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.808, y: 0.212, z: -0.518}
+  m_LocalPosition: {x: -1.808, y: -0.283, z: -0.198}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
@@ -365,8 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: 0.05
-  primitive_type: 1
+  tool_type: 0
+  primitive_type: 0
   grid: {fileID: 1123373064}
 --- !u!4 &1029997237
 Transform:
@@ -376,7 +376,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029997235}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.786, y: 0.212, z: -1.053}
+  m_LocalPosition: {x: -1.786, y: -0.283, z: -0.733}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
@@ -412,7 +412,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 1, y: 1, z: 2}
-  resolution: {x: 100, y: 100, z: 200}
+  resolution: {x: 300, y: 300, z: 800}
   outline_material: {fileID: 2100000, guid: 8bc7ffe6405f26e46a788aaee6af3a2c, type: 2}
   redraw_points: []
   origin: {fileID: 0}

@@ -6,7 +6,12 @@ using Microsoft.MixedReality.Toolkit.Input;
 
 public class SculptingPrimitive : MonoBehaviour
 {
-    public float dist_change_rate = 0.01f;
+    public enum ToolType
+    {
+        Activator,
+        Deactivator
+    }
+    public ToolType tool_type = ToolType.Activator;
 
     public enum PrimitivesEnum
     {
@@ -21,7 +26,6 @@ public class SculptingPrimitive : MonoBehaviour
     private DistanceFunction df;
 
     public GridCreator grid;
-
 
 
     void Start()
@@ -49,7 +53,7 @@ public class SculptingPrimitive : MonoBehaviour
         shape.AddComponent<NearInteractionGrabbable>();
 
         // --- Set color
-        if (dist_change_rate > 0) // if the primitive is an activator
+        if (tool_type == ToolType.Activator) // if the primitive is an activator
             shape.GetComponent<MeshRenderer>().material.color = Color.green;
         else // if the primitive is a deactivator
             shape.GetComponent<MeshRenderer>().material.color = Color.red;
@@ -69,7 +73,7 @@ public class SculptingPrimitive : MonoBehaviour
     void OnDrawGizmos()
     {
         // --- select color
-        if (dist_change_rate > 0)
+        if (tool_type == ToolType.Activator)
             Gizmos.color = Color.green;
         else
             Gizmos.color = Color.red;
@@ -81,7 +85,7 @@ public class SculptingPrimitive : MonoBehaviour
             Gizmos.DrawWireCube(transform.position, transform.localScale);
     }
 
-    void SphereUpdate()
+    void PrimitiveUpdate()
     {
         // --- go through all neigboring grid points, and check for collision
         // --- store all points in list which need redraw
@@ -90,8 +94,10 @@ public class SculptingPrimitive : MonoBehaviour
         float dz = grid.size.z / (grid.resolution.z - 1);
         Vector3 dxyz_inv = new Vector3(1 / dx, 1 / dy, 1 / dz);
         Vector3Int xyz_start, xyz_end;
-        xyz_start = Vector3Int.Max(Vector3Int.FloorToInt(Vector3.Scale(transform.position - 0.5f * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.zero);
-        xyz_end = Vector3Int.Min(Vector3Int.CeilToInt(Vector3.Scale(transform.position + 0.5f * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.FloorToInt(grid.resolution) - Vector3Int.one);
+
+        float s = 0.55f; // use a slightly bigger scale to be sure all relevant pts are in
+        xyz_start = Vector3Int.Max(Vector3Int.FloorToInt(Vector3.Scale(transform.position - s * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.zero);
+        xyz_end = Vector3Int.Min(Vector3Int.CeilToInt(Vector3.Scale(transform.position + s * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.FloorToInt(grid.resolution) - Vector3Int.one);
         for (int z = xyz_start.z; z <= xyz_end.z; z++)
         {
             for (int y = xyz_start.y; y <= xyz_end.y; y++)
@@ -99,71 +105,40 @@ public class SculptingPrimitive : MonoBehaviour
                 for (int x = xyz_start.x; x <= xyz_end.x; x++)
                 {
                     GridPoint pt = grid.pts[x, y, z];
-                    float d = df.GetDistance(pt.position);
 
-                    if (d < 0) // if there is a collision, activate collision mode
+                    bool check_pt = false; // only check points if they are likely to change in the event of collision
+                    if (tool_type == ToolType.Activator && pt.State == false)
+                        check_pt = true;
+                    else if (tool_type == ToolType.Deactivator && pt.State == true)
+                        check_pt = true;
+
+                    if (check_pt)
                     {
-                        if (!pt.is_inside_collider)
+                        float d = df.GetDistance(pt.position);
+
+                        if (d < 0) // if there is a collision, activate collision mode
                         {
-                            pt.is_inside_collider = true;
-                            pt.Update_Distance(dist_change_rate);
-                            if (pt.needs_redraw)
+                            if (!pt.is_inside_collider)
                             {
-                                grid.redraw_points.Add(new Vector3Int(x, y, z));
-                                pt.needs_redraw = false;
+                                pt.is_inside_collider = true;
+                                pt.Update_State(tool_type == ToolType.Activator);
+                                if (pt.needs_redraw)
+                                {
+                                    grid.redraw_points.Add(new Vector3Int(x, y, z));
+                                    pt.needs_redraw = false;
+                                }
                             }
                         }
-                    }
-                    else // otherwise deactivate collision mode
-                    {
-                        pt.is_inside_collider = false;
+                        else // otherwise deactivate collision mode
+                        {
+                            pt.is_inside_collider = false;
+                        }
                     }
                 }
             }
         }
     }
 
-    void CubeUpdate()
-    {
-        // --- go through all neigboring grid points, and check for collision
-        // --- store all points in list which need redraw
-        float dx = grid.size.x / (grid.resolution.x - 1);
-        float dy = grid.size.y / (grid.resolution.y - 1);
-        float dz = grid.size.z / (grid.resolution.z - 1);
-        Vector3 dxyz_inv = new Vector3(1 / dx, 1 / dy, 1 / dz);
-        Vector3Int xyz_start, xyz_end;
-        xyz_start = Vector3Int.Max(Vector3Int.FloorToInt(Vector3.Scale(transform.position - 0.5f * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.zero);
-        xyz_end = Vector3Int.Min(Vector3Int.CeilToInt(Vector3.Scale(transform.position + 0.5f * transform.localScale - grid.origin.transform.position, dxyz_inv)), Vector3Int.FloorToInt(grid.resolution) - Vector3Int.one);
-        for (int z = xyz_start.z; z <= xyz_end.z; z++)
-        {
-            for (int y = xyz_start.y; y <= xyz_end.y; y++)
-            {
-                for (int x = xyz_start.x; x <= xyz_end.x; x++)
-                {
-                    GridPoint pt = grid.pts[x, y, z];
-                    float d = df.GetDistance(pt.position);
-
-                    if (d < 0) // if there is a collision, activate collision mode
-                    {
-                        if (!pt.is_inside_collider)
-                        {
-                            pt.is_inside_collider = true;
-                            pt.Update_Distance(dist_change_rate);
-                            if (pt.needs_redraw)
-                            {
-                                grid.redraw_points.Add(new Vector3Int(x, y, z));
-                                pt.needs_redraw = false;
-                            }
-                        }
-                    }
-                    else // otherwise deactivate collision mode
-                    {
-                        pt.is_inside_collider = false;
-                    }
-                }
-            }
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -181,16 +156,8 @@ public class SculptingPrimitive : MonoBehaviour
             transform.rotation = shape.transform.rotation;
             transform.localScale = shape.transform.localScale;
 
-            switch (primitive_type)
-            {
-                case PrimitivesEnum.Sphere:
-                    SphereUpdate();
-                    break;
-                case PrimitivesEnum.Cube:
-                    CubeUpdate();
-                    break;
-            }
- 
+
+            PrimitiveUpdate();
         }
     }
 }

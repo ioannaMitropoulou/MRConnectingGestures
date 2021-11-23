@@ -222,10 +222,11 @@ public static class MarchingCubes
 
         for (int i = 0; i < vertices.Count; i += 3)
         {
-            triangles.Add(i);
+            triangles.Add(i + 2);
             triangles.Add(i + 1);
-            triangles.Add(i + 2); // , i + 1, i + 2
+            triangles.Add(i + 0); // , i + 1, i + 2
 
+            uv.Add(Vector2.zero);
             uv.Add(Vector2.zero);
             uv.Add(Vector2.zero);
         }
@@ -240,15 +241,15 @@ public static class MarchingCubes
         int caseNumber = 0;
         float[] n = new float[8]; // 8 cube corners
         // collecting the values
-        n[0] = grid.pts[x ,y+1, z].Dist_value;
-        n[1] = grid.pts[x+1, y+1, z].Dist_value;
-        n[2] = grid.pts[x+1, y, z].Dist_value;
-        n[3] = grid.pts[x, y, z].Dist_value;
-        n[4] = grid.pts[x, y + 1, z+1].Dist_value;
-        n[5] = grid.pts[x + 1, y + 1, z+1].Dist_value;
-        n[6] = grid.pts[x+1, y, z+1].Dist_value;
-        n[7] = grid.pts[x, y, z+1].Dist_value;
-        
+        n[0] = grid.pts[x, y + 1, z].State? -1.0f : 1.0f;
+        n[1] = grid.pts[x+1, y+1, z].State? -1.0f : 1.0f;
+        n[2] = grid.pts[x+1, y, z].State? -1.0f : 1.0f;
+        n[3] = grid.pts[x, y, z].State? -1.0f : 1.0f;
+        n[4] = grid.pts[x, y + 1, z+1].State? -1.0f : 1.0f;
+        n[5] = grid.pts[x + 1, y + 1, z+1].State? -1.0f : 1.0f;
+        n[6] = grid.pts[x+1, y, z+1].State? -1.0f : 1.0f;
+        n[7] = grid.pts[x, y, z+1].State? -1.0f : 1.0f;
+
         for (int i = 7; i > -1; i--)
         {
             if (n[i] > iso)
