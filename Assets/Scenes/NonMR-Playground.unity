@@ -412,9 +412,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: {x: 1, y: 1, z: 2}
-  resolution: {x: 300, y: 300, z: 800}
+  resolution: {x: 60, y: 60, z: 100}
   outline_material: {fileID: 2100000, guid: 8bc7ffe6405f26e46a788aaee6af3a2c, type: 2}
   redraw_points: []
+  proceduralMesh: {fileID: 394579525}
   origin: {fileID: 0}
 --- !u!4 &1123373065
 Transform:

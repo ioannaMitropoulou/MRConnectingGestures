@@ -156,7 +156,6 @@ public class SculptingPrimitive : MonoBehaviour
             transform.rotation = shape.transform.rotation;
             transform.localScale = shape.transform.localScale;
 
-
             PrimitiveUpdate();
         }
     }

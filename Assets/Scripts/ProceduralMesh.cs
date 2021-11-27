@@ -85,6 +85,14 @@ public class ProceduralMesh : MonoBehaviour
     }
 
 
+    public void TransformMesh(Transform T)
+    {
+        gameObject.transform.position = T.position;
+        gameObject.transform.localScale = T.localScale;
+        gameObject.transform.rotation = T.rotation;
+    }
+
+
     void Start()
     {
         grid = GetComponentInParent<GridCreator>();
