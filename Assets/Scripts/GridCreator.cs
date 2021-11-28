@@ -83,6 +83,8 @@ public class GridCreator : MonoBehaviour
 
     void SetToTransform(Transform T)
     {
+        // ATTENTION! THIS ONLY CONSIDERS POSITION ( NO SCALING OR ROTATION!)
+
         // transform origin
         origin = T;
 
@@ -93,10 +95,9 @@ public class GridCreator : MonoBehaviour
                     pts[x, y, z].position = new Vector3(origin.transform.position.x + x * dx * origin.transform.localScale.x,
                                                         origin.transform.position.y + y * dy * origin.transform.localScale.y,
                                                         origin.transform.position.z + z * dz * origin.transform.localScale.z);
-        // ATTENTION! THIS ONLY CONSIDERS POSITION + SCALING ( NO ROTATION!)
-
+        
         // transform mesh to initial transform
-        proceduralMesh.GetComponent<ProceduralMesh>().TransformMesh(origin);
+        // proceduralMesh.GetComponent<ProceduralMesh>().TransformMesh(origin);
     }
 
 
