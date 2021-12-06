@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 40919615}
   - component: {fileID: 40919616}
+  - component: {fileID: 40919617}
   m_Layer: 0
   m_Name: SP Activator Cube
   m_TagString: Untagged
@@ -152,7 +153,7 @@ Transform:
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 220762361}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &40919616
 MonoBehaviour:
@@ -166,9 +167,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: 0.5
+  tool_type: 0
   primitive_type: 1
   grid: {fileID: 734529070}
+  lastTouch: 0
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &40919617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40919614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  InputActionId: 0
+  isGlobal: 0
+  Dimensions: 1
+  dimensionIndex: 0
+  startDimensionIndex: 0
+  CanSelect: 1
+  CanDeselect: 1
+  VoiceCommand: 
+  voiceRequiresFocus: 1
+  profiles:
+  - Target: {fileID: 0}
+    Themes:
+    - {fileID: 0}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  Events: []
+  resetOnDestroy: 0
+  enabledOnStart: 1
 --- !u!1 &220762360
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,8 +236,6 @@ Transform:
   - {fileID: 963194228}
   - {fileID: 1344994795}
   - {fileID: 734529069}
-  - {fileID: 369162971}
-  - {fileID: 1488179314}
   - {fileID: 40919615}
   - {fileID: 223974227}
   m_Father: {fileID: 0}
@@ -216,6 +251,7 @@ GameObject:
   m_Component:
   - component: {fileID: 223974227}
   - component: {fileID: 223974228}
+  - component: {fileID: 223974229}
   m_Layer: 0
   m_Name: SP Deactivator Cube
   m_TagString: Untagged
@@ -235,7 +271,7 @@ Transform:
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 220762361}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &223974228
 MonoBehaviour:
@@ -249,55 +285,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: -0.5
+  tool_type: 1
   primitive_type: 1
   grid: {fileID: 734529070}
---- !u!1 &369162970
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 369162971}
-  - component: {fileID: 369162972}
-  m_Layer: 0
-  m_Name: SP Activator Sphere
-  m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &369162971
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369162970}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: 0.2, z: -0.266}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
-  m_Children: []
-  m_Father: {fileID: 220762361}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &369162972
+  lastTouch: 0
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &223974229
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 369162970}
+  m_GameObject: {fileID: 223974226}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dist_change_rate: 0.5
-  primitive_type: 0
-  grid: {fileID: 734529070}
+  states: {fileID: 11400000, guid: 5eac1712038236e4b8ffdb3893804fe1, type: 2}
+  InputActionId: 0
+  isGlobal: 0
+  Dimensions: 1
+  dimensionIndex: 0
+  startDimensionIndex: 0
+  CanSelect: 1
+  CanDeselect: 1
+  VoiceCommand: 
+  voiceRequiresFocus: 1
+  profiles:
+  - Target: {fileID: 0}
+    Themes:
+    - {fileID: 0}
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  Events: []
+  resetOnDestroy: 0
+  enabledOnStart: 1
 --- !u!1 &421320253
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,6 +511,7 @@ MonoBehaviour:
   resolution: {x: 128, y: 64, z: 64}
   outline_material: {fileID: 2100000, guid: 8bc7ffe6405f26e46a788aaee6af3a2c, type: 2}
   redraw_points: []
+  proceduralMesh: {fileID: 0}
   origin: {fileID: 0}
 --- !u!1 &963194225
 GameObject:
@@ -828,52 +855,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTetherWhenManipulating: 0
   IsBoundsHandles: 0
---- !u!1 &1488179313
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1488179314}
-  - component: {fileID: 1488179315}
-  m_Layer: 0
-  m_Name: SP Deactivator Sphere
-  m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1488179314
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488179313}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.7, y: 0.2, z: -0.2}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
-  m_Children: []
-  m_Father: {fileID: 220762361}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1488179315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488179313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecc641acf1395c74cad5faa411102286, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dist_change_rate: -0.5
-  primitive_type: 0
-  grid: {fileID: 734529070}
 --- !u!1 &1695201564
 GameObject:
   m_ObjectHideFlags: 0

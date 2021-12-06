@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UI;
+using UnityEngine.Events;
 using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
+using Microsoft.MixedReality.Toolkit.Utilities;
 
-public class SculptingPrimitive : MonoBehaviour
+
+[RequireComponent(typeof(Interactable))]
+public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
 {
     public enum ToolType
     {
-        Activator,
-        Deactivator
+        Activator, // Updated with right hand
+        Deactivator // Updated with left hand
     }
     public ToolType tool_type = ToolType.Activator;
 
@@ -27,13 +31,20 @@ public class SculptingPrimitive : MonoBehaviour
 
     public GridCreator grid;
 
+    private MeshRenderer renderer;
+
+    // --- interaction responder params
+    public Handedness lastTouch;
+    public InputEventData inputPrimitive;
+    public UnityEvent<Handedness> OnClick = new UnityEvent<Handedness>();
+    MixedRealityPose pose; // parameter where hand pose is stored
+
 
     void Start()
     {
         // --- Set shape
         if (primitive_type == PrimitivesEnum.Sphere)
         {
-
             shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         }
         else if (primitive_type == PrimitivesEnum.Cube)
@@ -48,15 +59,19 @@ public class SculptingPrimitive : MonoBehaviour
         shape.transform.rotation = transform.rotation;
         shape.transform.localScale = transform.localScale;
 
+        // --- interaction responder
+        GetComponent<Interactable>().OnClick.AddListener(HandleClick);
+
         // --- make the shape grabbable in AR 
         shape.AddComponent<ObjectManipulator>();
         shape.AddComponent<NearInteractionGrabbable>();
 
         // --- Set color
+        renderer = shape.GetComponent<MeshRenderer>();
         if (tool_type == ToolType.Activator) // if the primitive is an activator
-            shape.GetComponent<MeshRenderer>().material.color = Color.green;
+            renderer.material.color = Color.green;
         else // if the primitive is a deactivator
-            shape.GetComponent<MeshRenderer>().material.color = Color.red;
+            renderer.material.color = Color.red;
 
 
         // --- Create distance function
@@ -68,6 +83,45 @@ public class SculptingPrimitive : MonoBehaviour
         {
             df = new DFBox(shape.transform.localScale, shape.transform); // use the localScale as box dimensions
         }
+    }
+
+
+    // --- Interaction responder functions
+    public void OnTouchStarted(HandTrackingInputEventData eventData)
+    {
+        lastTouch = eventData.Handedness;
+        renderer.material.color = Color.blue ;
+        Debug.Log("last touch use hand" + lastTouch);  // console write
+        // change the primitive in the corresponding hand to the current primitive
+        // ===============================================================================
+        //if (primitive_type == PrimitivesEnum.Sphere)
+        //{
+
+        //    shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //}
+        //else if (primitive_type == PrimitivesEnum.Cube)
+        //{
+        //    shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //}
+        //else
+        //{
+        //    return;
+        //}
+        // ===============================================================================
+    }
+
+    public void OnTouchCompleted(HandTrackingInputEventData eventData)
+    {
+        renderer.material.color = Color.white;
+    }
+
+    public void OnTouchUpdated(HandTrackingInputEventData eventData)
+    {
+    }
+
+    private void HandleClick()
+    {
+        OnClick.Invoke(lastTouch);
     }
 
     void OnDrawGizmos()
@@ -143,6 +197,26 @@ public class SculptingPrimitive : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        // --- Change primitive according to hand position
+        if (tool_type == ToolType.Activator)
+        {
+            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
+            {
+                shape.transform.position = pose.Position;
+            }
+        }
+
+        else if (tool_type == ToolType.Deactivator)
+        {
+            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out pose))
+            {
+                shape.transform.position = pose.Position;
+            }
+        }
+
+
+        // --- Update primitive
         if (shape.transform.hasChanged) // only check if the transform of the shape has been changed
         {
             shape.transform.hasChanged = false;
