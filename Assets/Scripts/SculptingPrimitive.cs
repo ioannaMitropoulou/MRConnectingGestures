@@ -5,9 +5,11 @@ using UnityEngine.Events;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
+using UnityEngine.Windows.Speech;
 
 
 [RequireComponent(typeof(Interactable))]
+
 public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
 {
     public enum ToolType
@@ -39,6 +41,11 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
     public UnityEvent<Handedness> OnClick = new UnityEvent<Handedness>();
     MixedRealityPose pose; // parameter where hand pose is stored
 
+    public bool is_active = true;
+
+    private Vector3 initial_local_scale;
+
+
 
     void Start()
     {
@@ -58,6 +65,8 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
         shape.transform.position = transform.position;
         shape.transform.rotation = transform.rotation;
         shape.transform.localScale = transform.localScale;
+
+        initial_local_scale = shape.transform.localScale;
 
         // --- interaction responder
         GetComponent<Interactable>().OnClick.AddListener(HandleClick);
@@ -83,45 +92,6 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
         {
             df = new DFBox(shape.transform.localScale, shape.transform); // use the localScale as box dimensions
         }
-    }
-
-
-    // --- Interaction responder functions
-    public void OnTouchStarted(HandTrackingInputEventData eventData)
-    {
-        lastTouch = eventData.Handedness;
-        renderer.material.color = Color.blue ;
-        Debug.Log("last touch use hand" + lastTouch);  // console write
-        // change the primitive in the corresponding hand to the current primitive
-        // ===============================================================================
-        //if (primitive_type == PrimitivesEnum.Sphere)
-        //{
-
-        //    shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //}
-        //else if (primitive_type == PrimitivesEnum.Cube)
-        //{
-        //    shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //}
-        //else
-        //{
-        //    return;
-        //}
-        // ===============================================================================
-    }
-
-    public void OnTouchCompleted(HandTrackingInputEventData eventData)
-    {
-        renderer.material.color = Color.white;
-    }
-
-    public void OnTouchUpdated(HandTrackingInputEventData eventData)
-    {
-    }
-
-    private void HandleClick()
-    {
-        OnClick.Invoke(lastTouch);
     }
 
     void OnDrawGizmos()
@@ -193,7 +163,6 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
         }
     }
 
-
     // Update is called once per frame
     void Update()
     {
@@ -215,9 +184,11 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
             }
         }
 
+        shape.GetComponent<MeshRenderer>().enabled = is_active; // disable shape when the sculpting tool is not active
+
 
         // --- Update primitive
-        if (shape.transform.hasChanged) // only check if the transform of the shape has been changed
+        if (shape.transform.hasChanged && is_active) // only check if the transform of the shape has been changed
         {
             shape.transform.hasChanged = false;
 
@@ -233,4 +204,114 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
             PrimitiveUpdate();
         }
     }
+
+
+    /// //////////////////////////////////////
+    /// --- Hand interaction responder functions
+    public void OnTouchStarted(HandTrackingInputEventData eventData)
+    {
+        lastTouch = eventData.Handedness;
+        renderer.material.color = Color.blue;
+        Debug.Log("last touch use hand" + lastTouch);  // console write
+        // change the primitive in the corresponding hand to the current primitive
+        // ===============================================================================
+        //if (primitive_type == PrimitivesEnum.Sphere)
+        //{
+        //    shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //}
+        //else if (primitive_type == PrimitivesEnum.Cube)
+        //{
+        //    shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        //}
+        //else
+        //{
+        //    return;
+        //}
+        // ===============================================================================
+    }
+
+    public void OnTouchCompleted(HandTrackingInputEventData eventData)
+    {
+        renderer.material.color = Color.white;
+    }
+
+    public void OnTouchUpdated(HandTrackingInputEventData eventData)
+    {
+    }
+
+    private void HandleClick()
+    {
+        OnClick.Invoke(lastTouch);
+    }
+
+
+
+    /// //////////////////////////////////////
+    /// --- Speech recognition functions
+
+    public void turn_on()
+    {
+        is_active = true;
+        // renderer.material.color = Color.white;
+    }
+    public void turn_off()
+    {
+        is_active = false;
+        // renderer.material.color = Color.yellow;
+    }
+    public void turn_to_shere()
+    {
+        if (primitive_type == PrimitivesEnum.Cube)
+        {
+            primitive_type = PrimitivesEnum.Sphere;
+            Transform t = shape.transform;
+            GameObject.Destroy(shape);
+            shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            shape.transform.localScale = t.localScale;
+            shape.transform.position = t.position;
+            df = new DFSphere(shape.transform.localScale.x * 0.5f, shape.transform); // use the localScale.x as the circle radius
+
+            // set color
+            renderer = shape.GetComponent<MeshRenderer>();
+            if (tool_type == ToolType.Activator) // if the primitive is an activator
+                renderer.material.color = Color.green;
+            else // if the primitive is a deactivator
+                renderer.material.color = Color.red;
+        }
+    }
+    public void turn_to_cubes()
+    {
+        if (primitive_type == PrimitivesEnum.Sphere)
+        {
+            primitive_type = PrimitivesEnum.Cube;
+            Transform t = shape.transform;
+            GameObject.Destroy(shape);
+            shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            shape.transform.localScale = t.localScale;
+            shape.transform.position = t.position;
+            df = new DFBox(shape.transform.localScale, shape.transform); // use the localScale as box dimensions
+
+            // set color
+            renderer = shape.GetComponent<MeshRenderer>();
+            if (tool_type == ToolType.Activator) // if the primitive is an activator
+                renderer.material.color = Color.green;
+            else // if the primitive is a deactivator
+                renderer.material.color = Color.red;
+        }
+    }
+    public void reset()
+    {
+        is_active = true;
+        shape.transform.localScale = initial_local_scale;
+    }
+    public void bigger()
+    {
+        shape.transform.localScale *= 1.2f;
+    }
+    public void smaller()
+    {
+        shape.transform.localScale *= 0.8f;
+    }
+
+
 }
