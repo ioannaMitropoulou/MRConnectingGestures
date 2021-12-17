@@ -18,14 +18,14 @@ MonoBehaviour:
   speechCommands:
   - localizationKey: 
     keyword: On
-    keyCode: 0
+    keyCode: 256
     action:
       id: 0
       description: None
       axisConstraint: 0
   - localizationKey: 
     keyword: Off
-    keyCode: 0
+    keyCode: 266
     action:
       id: 0
       description: None
@@ -61,6 +61,20 @@ MonoBehaviour:
   - localizationKey: 
     keyword: Reset
     keyCode: 0
+    action:
+      id: 0
+      description: Trigger
+      axisConstraint: 3
+  - localizationKey: 
+    keyword: Grid
+    keyCode: 257
+    action:
+      id: 0
+      description: Trigger
+      axisConstraint: 3
+  - localizationKey: 
+    keyword: save
+    keyCode: 258
     action:
       id: 0
       description: Trigger

@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using UnityEngine.XR.ARSubsystems;
+using UnityEngine.XR;
+
 
 public class ProceduralMesh : MonoBehaviour
 {
@@ -107,5 +113,37 @@ public class ProceduralMesh : MonoBehaviour
             grid.redraw_points.Clear();
             Debug.Log("Generating marching cubes mesh!");
         }
+    }
+
+
+    void save()
+    {
+        MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
+        Transform t = gameObject.transform;
+        string meshString = ObjExporterScript.MeshToString(meshFilter, t);
+
+        if (XRSettings.loadedDeviceName == "HoloLens")
+        {
+            string fileName = "result";
+            SaveObjToDevice(fileName, meshString);
+        }
+        else
+        {
+            string fileName = "C:/dev/MRConnectingGestures_2/objs/result.obj";
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                sw.Write(meshString);
+            }
+            Debug.Log("Saved obj on filename : ");
+            Debug.Log(fileName);
+        }
+    }
+
+
+    public void SaveObjToDevice(string filename, string obj)
+    {
+        string path = string.Format("{0}/3D Objects/{1}.obj", Application.persistentDataPath, filename);
+        byte[] data = Encoding.ASCII.GetBytes(obj);
+        UnityEngine.Windows.File.WriteAllBytes(path, data);
     }
 }

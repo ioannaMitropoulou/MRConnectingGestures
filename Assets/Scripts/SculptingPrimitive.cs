@@ -5,12 +5,11 @@ using UnityEngine.Events;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UI;
 using Microsoft.MixedReality.Toolkit.Utilities;
-using UnityEngine.Windows.Speech;
 
 
 [RequireComponent(typeof(Interactable))]
 
-public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
+public class SculptingPrimitive : MonoBehaviour //, IMixedRealityTouchHandler
 {
     public enum ToolType
     {
@@ -36,9 +35,9 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
     private MeshRenderer renderer;
 
     // --- interaction responder params
-    public Handedness lastTouch;
-    public InputEventData inputPrimitive;
-    public UnityEvent<Handedness> OnClick = new UnityEvent<Handedness>();
+    // public Handedness lastTouch;
+    // public InputEventData inputPrimitive;
+    // public UnityEvent<Handedness> OnClick = new UnityEvent<Handedness>();
     MixedRealityPose pose; // parameter where hand pose is stored
 
     public bool is_active = true;
@@ -69,7 +68,7 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
         initial_local_scale = shape.transform.localScale;
 
         // --- interaction responder
-        GetComponent<Interactable>().OnClick.AddListener(HandleClick);
+        /*GetComponent<Interactable>().OnClick.AddListener(HandleClick);*/
 
         // --- make the shape grabbable in AR 
         shape.AddComponent<ObjectManipulator>();
@@ -168,7 +167,7 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
     {
 
         // --- Change primitive according to hand position
-        if (tool_type == ToolType.Activator)
+        if (tool_type == ToolType.Activator && is_active)
         {
             if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
             {
@@ -176,7 +175,7 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
             }
         }
 
-        else if (tool_type == ToolType.Deactivator)
+        else if (tool_type == ToolType.Deactivator && is_active)
         {
             if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Left, out pose))
             {
@@ -208,31 +207,17 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
 
     /// //////////////////////////////////////
     /// --- Hand interaction responder functions
-    public void OnTouchStarted(HandTrackingInputEventData eventData)
+/*    public void OnTouchStarted(HandTrackingInputEventData eventData)
     {
-        lastTouch = eventData.Handedness;
-        renderer.material.color = Color.blue;
+        //lastTouch = eventData.Handedness;
+*//*        renderer.material.color = Color.blue;
         Debug.Log("last touch use hand" + lastTouch);  // console write
-        // change the primitive in the corresponding hand to the current primitive
-        // ===============================================================================
-        //if (primitive_type == PrimitivesEnum.Sphere)
-        //{
-        //    shape = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        //}
-        //else if (primitive_type == PrimitivesEnum.Cube)
-        //{
-        //    shape = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //}
-        //else
-        //{
-        //    return;
-        //}
-        // ===============================================================================
+*//*
     }
 
     public void OnTouchCompleted(HandTrackingInputEventData eventData)
     {
-        renderer.material.color = Color.white;
+        // renderer.material.color = Color.white;
     }
 
     public void OnTouchUpdated(HandTrackingInputEventData eventData)
@@ -241,8 +226,8 @@ public class SculptingPrimitive : MonoBehaviour, IMixedRealityTouchHandler
 
     private void HandleClick()
     {
-        OnClick.Invoke(lastTouch);
-    }
+        //OnClick.Invoke(lastTouch);
+    }*/
 
 
 

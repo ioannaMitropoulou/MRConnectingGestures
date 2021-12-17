@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Microsoft.MixedReality.Toolkit.Utilities;
 
 public class GridCreator : MonoBehaviour
 {
@@ -24,6 +27,11 @@ public class GridCreator : MonoBehaviour
 
     public Transform origin;
     private Transform startTransform;
+
+    private bool attach_to_right_hand = false;
+    MixedRealityPose pose; // parameter where hand pose is stored
+
+    private Vector3 old_pos;
 
 
     void Start()
@@ -71,10 +79,36 @@ public class GridCreator : MonoBehaviour
         }
     }
 
+
     void Update()
     {
+        if (attach_to_right_hand)
+        {
+            float threshold = 0.2f;
+            if (HandJointUtils.TryGetJointPose(TrackedHandJoint.IndexTip, Handedness.Right, out pose))
+            {
+                if (old_pos.x == 0.0f && old_pos.y == 0.0f && old_pos.z == 0.0f) // first time set to 
+                {
+                    old_pos = pose.Position;
+                }
+
+                if (Vector3.Distance(old_pos, pose.Position) > threshold)
+                {
+                    origin.transform.position = pose.Position;
+                    old_pos = pose.Position;
+                }
+            }
+        }
+        else
+        {
+            old_pos = new Vector3(0.0f, 0.0f, 0.0f);
+        }
+
+
+        // ----- update grid
         if (origin.transform.hasChanged)
         {
+            
             SetToTransform(origin.transform);
             Debug.Log("Grid and mesh transformation");
             origin.transform.hasChanged = false;
@@ -84,7 +118,6 @@ public class GridCreator : MonoBehaviour
     void SetToTransform(Transform T)
     {
         // ATTENTION! THIS ONLY CONSIDERS POSITION ( NO SCALING OR ROTATION!)
-
         // transform origin
         origin = T;
 
@@ -114,6 +147,14 @@ public class GridCreator : MonoBehaviour
         Gizmos.color = Color.yellow;
         Transform origin = this.transform.Find("Origin");
         Gizmos.DrawWireCube(origin.position + new Vector3(0.5f * size.x, 0.5f * size.y, 0.5f * size.z), new Vector3(size.x, size.y, size.z));
+    }
+
+    /// //////////////////////
+    /// Voice commands
+
+    void toggle_attach_to_right_hand()
+    {
+        attach_to_right_hand = !attach_to_right_hand;
     }
 
 

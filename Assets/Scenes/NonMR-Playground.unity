@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b78df06dd0d8fa34a938cd4cc38dcef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: d222cb2ee0e40354fa4d1abc334eb895, type: 2}
+  material: {fileID: 2100000, guid: 0652b3557b29fdc49b7e86422d594276, type: 2}
 --- !u!1 &623316312
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +270,7 @@ GameObject:
   m_Component:
   - component: {fileID: 887358723}
   - component: {fileID: 887358722}
+  - component: {fileID: 887358724}
   m_Layer: 0
   m_Name: SP Deactivator
   m_TagString: Untagged
@@ -292,6 +293,11 @@ MonoBehaviour:
   tool_type: 1
   primitive_type: 1
   grid: {fileID: 1123373064}
+  lastTouch: 0
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  is_active: 1
 --- !u!4 &887358723
 Transform:
   m_ObjectHideFlags: 0
@@ -306,6 +312,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &887358724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887358721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  states: {fileID: 0}
+  InputActionId: 0
+  isGlobal: 0
+  Dimensions: 1
+  dimensionIndex: 0
+  startDimensionIndex: 0
+  CanSelect: 1
+  CanDeselect: 1
+  VoiceCommand: 
+  voiceRequiresFocus: 1
+  profiles: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  Events: []
+  resetOnDestroy: 0
+  enabledOnStart: 1
 --- !u!1 &960881572
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +381,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1029997237}
   - component: {fileID: 1029997236}
+  - component: {fileID: 1029997238}
   m_Layer: 0
   m_Name: SP Activator
   m_TagString: Untagged
@@ -368,6 +404,11 @@ MonoBehaviour:
   tool_type: 0
   primitive_type: 0
   grid: {fileID: 1123373064}
+  lastTouch: 0
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  is_active: 1
 --- !u!4 &1029997237
 Transform:
   m_ObjectHideFlags: 0
@@ -382,6 +423,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1029997238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029997235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1410eac1ae94b4d4492a09cc368e152c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  states: {fileID: 0}
+  InputActionId: 0
+  isGlobal: 0
+  Dimensions: 1
+  dimensionIndex: 0
+  startDimensionIndex: 0
+  CanSelect: 1
+  CanDeselect: 1
+  VoiceCommand: 
+  voiceRequiresFocus: 1
+  profiles: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+  Events: []
+  resetOnDestroy: 0
+  enabledOnStart: 1
 --- !u!1 &1123373063
 GameObject:
   m_ObjectHideFlags: 0
