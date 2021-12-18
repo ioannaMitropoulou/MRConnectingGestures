@@ -7,7 +7,7 @@ using System.Text;
 using Newtonsoft.Json;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.XR;
-
+using Microsoft.MixedReality.Toolkit.UI;
 
 public class ProceduralMesh : MonoBehaviour
 {
@@ -145,5 +145,35 @@ public class ProceduralMesh : MonoBehaviour
         string path = string.Format("{0}/3D Objects/{1}.obj", Application.persistentDataPath, filename);
         byte[] data = Encoding.ASCII.GetBytes(obj);
         UnityEngine.Windows.File.WriteAllBytes(path, data);
+    }
+
+    public void OnSliderUpdatedRed(SliderEventData eventData)
+    {
+        GameObject go = this.gameObject;
+        material.color = new Color(eventData.NewValue, material.color.g, material.color.b);
+        MeshRenderer mr = go.GetComponent<MeshRenderer>(); //add meshrenderer component
+        if (mr == null)
+            mr = go.AddComponent<MeshRenderer>();
+        mr.material = material;
+    }
+
+    public void OnSliderUpdatedGreen(SliderEventData eventData)
+    {
+        GameObject go = this.gameObject;
+        material.color = new Color(material.color.r, eventData.NewValue, material.color.b);
+        MeshRenderer mr = go.GetComponent<MeshRenderer>(); //add meshrenderer component
+        if (mr == null)
+            mr = go.AddComponent<MeshRenderer>();
+        mr.material = material;
+    }
+
+    public void OnSliderUpdatedBlue(SliderEventData eventData)
+    {
+        GameObject go = this.gameObject;
+        material.color = new Color(material.color.r, material.color.g, eventData.NewValue);
+        MeshRenderer mr = go.GetComponent<MeshRenderer>(); //add meshrenderer component
+        if (mr == null)
+            mr = go.AddComponent<MeshRenderer>();
+        mr.material = material;
     }
 }
