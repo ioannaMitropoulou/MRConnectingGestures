@@ -1,4 +1,4 @@
-# MRConnectingGestures
+# Sculpting Gestures
 
 This project was the result of our partitipation in the Mixed Reality Course in the Fall Semester 2021. 
 http://www.cvg.ethz.ch/teaching/mrlab/
